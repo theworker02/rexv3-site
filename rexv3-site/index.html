@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>System Scan</title>
+
+
+
+  <style>
+
+    body {
+
+      margin: 0;
+
+      background: black;
+
+      color: #ff0033;
+
+      font-family: monospace;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      height: 100vh;
+
+      flex-direction: column;
+
+      overflow: hidden;
+
+    }
+
+
+
+    h1 {
+
+      color: red;
+
+      animation: blink 1s infinite;
+
+    }
+
+
+
+    @keyframes blink {
+
+      50% { opacity: 0.3; }
+
+    }
+
+
+
+    .bar-container {
+
+      width: 350px;
+
+      height: 20px;
+
+      border: 2px solid red;
+
+      margin-top: 20px;
+
+    }
+
+
+
+    .bar {
+
+      height: 100%;
+
+      width: 0%;
+
+      background: red;
+
+      transition: width 0.2s;
+
+    }
+
+
+
+    #terminal {
+
+      margin-top: 20px;
+
+      width: 400px;
+
+      height: 120px;
+
+      overflow: hidden;
+
+      border: 1px solid red;
+
+      padding: 10px;
+
+      text-align: left;
+
+      font-size: 14px;
+
+    }
+
+
+
+    #main-content {
+
+      display: none;
+
+      text-align: center;
+
+      position: relative;
+
+      width: 100%;
+
+      height: 100vh;
+
+    }
+
+
+
+    img {
+
+      width: 300px;
+
+      border-radius: 15px;
+
+    }
+
+
+
+    .btn {
+
+      position: absolute;
+
+      padding: 12px 20px;
+
+      background: red;
+
+      color: black;
+
+      border-radius: 10px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      user-select: none;
+
+    }
+
+
+
+    .btn:hover {
+
+      background: darkred;
+
+    }
+
+
+
+    #scare {
+
+      position: fixed;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100vw;
+
+      height: 100vh;
+
+      background: black;
+
+      display: none;
+
+      justify-content: center;
+
+      align-items: center;
+
+      z-index: 9999;
+
+    }
+
+
+
+    #scare img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+  </style>
+
+</head>
+
+
+
+<body onclick="enableSound()">
+
+
+
+  <!-- LOADING -->
+
+  <div id="loading-screen">
+
+    <h1>⚠ SYSTEM BREACH DETECTED ⚠</h1>
+
+    <p id="loading-text">Initializing scan...</p>
+
+
+
+    <div class="bar-container">
+
+      <div class="bar" id="progress-bar"></div>
+
+    </div>
+
+
+
+    <div id="terminal"></div>
+
+  </div>
+
+
+
+  <!-- JUMPSCARE -->
+
+  <div id="scare">
+
+    <img src="images/scare.jpg">
+
+    <audio id="scream" src="sounds/Loud.mp3"></audio>
+
+  </div>
+
+
+
+  <!-- MAIN -->
+
+  <div id="main-content">
+
+    <img src="images/main.jpg">
+
+    <h1>good luck leaving 💀</h1>
+
+
+
+    <div id="btn1" class="btn" onclick="playAndGo('https://google.com')">GET OUT</div>
+
+    <div id="btn2" class="btn" onclick="playAndGo('https://archive.org')">EXIT</div>
+
+    <div id="btn3" class="btn" onclick="playAndGo('https://www.thisman.org')">LEAVE</div>
+
+  </div>
+
+
+
+  <script>
+
+    let progress = 0;
+
+    const bar = document.getElementById("progress-bar");
+
+    const text = document.getElementById("loading-text");
+
+    const terminal = document.getElementById("terminal");
+
+    const sound = document.getElementById("scream");
+
+
+
+    let soundEnabled = false;
+
+
+
+    function enableSound() {
+
+      if (!soundEnabled) {
+
+        sound.play().then(() => {
+
+          sound.pause();
+
+          sound.currentTime = 0;
+
+          soundEnabled = true;
+
+        }).catch(() => {});
+
+      }
+
+    }
+
+
+
+    function playAndGo(url) {
+
+      sound.play();
+
+      setTimeout(() => {
+
+        window.location.href = url;
+
+      }, 200);
+
+    }
+
+
+
+    const messages = [
+
+      "Scanning system...",
+
+      "Accessing files...",
+
+      "Extracting data...",
+
+      "Scanning browser history...",
+
+      "Contacting the FBI...",
+
+      "Uploading personal data...",
+
+      "Finalizing..."
+
+    ];
+
+
+
+    const logs = [
+
+      ">> Root access granted",
+
+      ">> Injecting payload...",
+
+      ">> Reading C:/Users/...",
+
+      ">> Extracting saved passwords...",
+
+      ">> IP logged: 192.168.0." + Math.floor(Math.random()*255),
+
+      ">> Sending data to remote server...",
+
+      ">> Encryption complete..."
+
+    ];
+
+
+
+    const interval = setInterval(() => {
+
+      progress += Math.random() * 10;
+
+
+
+      if (progress >= 100) {
+
+        progress = 100;
+
+        clearInterval(interval);
+
+
+
+        const scare = document.getElementById("scare");
+
+
+
+        scare.style.display = "flex";
+
+        sound.play();
+
+
+
+        setTimeout(() => {
+
+          scare.style.display = "none";
+
+          document.getElementById("loading-screen").style.display = "none";
+
+          document.getElementById("main-content").style.display = "block";
+
+
+
+          spawnButtons();
+
+        }, 1200);
+
+      }
+
+
+
+      bar.style.width = progress + "%";
+
+
+
+      const index = Math.floor((progress / 100) * messages.length);
+
+      text.innerText = messages[index] || "Loading...";
+
+
+
+      if (Math.random() > 0.5) {
+
+        const line = logs[Math.floor(Math.random() * logs.length)];
+
+        terminal.innerHTML += line + "<br>";
+
+        terminal.scrollTop = terminal.scrollHeight;
+
+      }
+
+
+
+    }, 250);
+
+
+
+    const buttons = [
+
+      document.getElementById("btn1"),
+
+      document.getElementById("btn2"),
+
+      document.getElementById("btn3")
+
+    ];
+
+
+
+    function spawnButtons() {
+
+      buttons.forEach(btn => {
+
+        btn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+
+        btn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+
+      });
+
+    }
+
+
+
+    document.addEventListener("mousemove", (e) => {
+
+      buttons.forEach(btn => {
+
+        const rect = btn.getBoundingClientRect();
+
+        const dx = e.clientX - rect.left;
+
+        const dy = e.clientY - rect.top;
+
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+
+
+        if (dist < 120) {
+
+          btn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+
+          btn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+
+        }
+
+      });
+
+    });
+
+
+
+    // subtle glitch movement
+
+    setInterval(() => {
+
+      buttons.forEach(btn => {
+
+        btn.style.transform = `translate(${Math.random()*6-3}px, ${Math.random()*6-3}px)`;
+
+      });
+
+    }, 100);
+
+
+
+  </script>
+
+
+
+</body>
+
+</html>
